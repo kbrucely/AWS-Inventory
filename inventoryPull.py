@@ -38,8 +38,15 @@ if sys.argv[1]=='--file':
         json.dump(output, outfile,indent=4)
 
     with open('regoutput.txt', 'w') as outfile:
-        for instance in instances:
-            outfile.write(instance.private_ip_address+'\n')  
+        outfile.write('[all]'+'\n')
+        for x in hostList:
+            outfile.write(x+'\n')  
+        outfile.write('\n'+'[linux]'+'\n')
+        for x in linuxList:
+            outfile.write(x+'\n')  
+        outfile.write('\n'+'[windows]'+'\n')
+        for x in windowsList:
+            outfile.write(x+'\n')  
 
 elif sys.argv[1]=='--list':
 #dump to std out for ansible
