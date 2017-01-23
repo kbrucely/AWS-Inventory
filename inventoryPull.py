@@ -16,11 +16,18 @@ for instance in instances:
 
 linuxList = []
 windowsList = []
+nameList = []
+
 for instance in instances:
     if instance.platform != 'windows':
         linuxList.append(instance.private_ip_address)
     else:
         windowsList.append(instance.private_ip_address)
+
+for instance in instances:
+    for tags in instance.tags:
+        if tags['Key'] == 'Name':
+            nameList.append(tags['Value'])
 
 #add the hosts to the json output    
 output = dict(all=dict (hosts=hostList), linux=dict(hosts=linuxList), windows=dict(hosts=windowsList))
@@ -45,6 +52,11 @@ if sys.argv[1]=='--file':
         outfile.write('\n'+'[windows]'+'\n')
         for x in windowsList:
             outfile.write(x+'\n')  
+
+    with open('nameoutput.txt', 'w') as outfile:
+        outfile.write('[all]'+'\n')
+        for x in nameList:
+            outfile.write(x+'\n')
 
 elif sys.argv[1]=='--list':
 #dump to std out for ansible
